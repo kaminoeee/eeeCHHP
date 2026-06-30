@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
+<html lang="ja"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eeeの不思議な日記 公式サイト</title>
@@ -46,13 +46,13 @@
 <body>
 
     <header>
-        <h1>eeeの不思議な日記 公式サイト <span id="admin-title-badge" class="admin-badge">Admin Mode</span></h1>
+        <h1>eeeの不思議な日記 公式サイト <span id="admin-title-badge" class="admin-badge" style="display: inline-block;">Admin Mode</span></h1>
         <p>ブロスタのレベル一チャレンジ動画などをを投稿中！</p>
     </header>
 
     <div class="container">
 
-        <section id="admin-panel">
+        <section id="admin-panel" style="display: block;">
             <h2>【管理者専用】 記事作成・コード出力</h2>
             <div class="form-group">
                 <label>タイトル</label>
@@ -64,7 +64,7 @@
             </div>
             <button type="button" class="btn-admin" onclick="generateNewCode()">① 変更（追加・削除）を確定してコードを出力</button>
             <p style="font-size:0.85rem; color:#aaa; margin-top:10px;">↓下の枠に出たコードをすべてコピーして、GitHubの「index.html」に上書き貼り付け（Commit）してください。</p>
-            <textarea id="code-output" class="output-box" readonly onclick="this.select()"></textarea>
+            <textarea id="code-output" class="output-box" readonly="" onclick="this.select()"></textarea>
         </section>
 
         <section>
@@ -74,13 +74,24 @@
         </section>
 
         <section>
-            <h2>Blog & News</h2>
-            <div id="blog-container">
+            <h2>Blog &amp; News</h2>
+            <div id="blog-container">                <div class="blog-item">
+                    <span class="blog-date">2026/06/30</span>
+                    <div class="blog-title">動画作成ツールについて</div>
+                    <p class="blog-excerpt">私は現状使っているのは「canva」という編集サイトです。
+このcanvaは有料版もあるのですが私はカネがないので無料版で動画を作成しています。
+ここで一番困ったのが文字PVを作る際アニメーションの早さなどが無料版だと制限されている点です。
+そもそもcanvaで文字PVをつくるのはどうかと思いますがまあ文字を一瞬だけ表示してアニメーションの速度を早くさせるなど工夫をして動画を投稿させてもらいました。
+これからもよろしくお願いします！
+byeeeの不思議な日記</p>
+                    <button class="btn-delete" onclick="deletePost(this)">この記事を削除</button>
+                </div>
+
                 <div class="blog-item">
                     <span class="blog-date">2026/06/29</span>
                     <div class="blog-title">公式サイトを開設しました！</div>
                     <p class="blog-excerpt">YouTubeだけでは書ききれない動画の裏話などをここに残していく予定です。これからの更新をお楽しみに！</p>
-                    <button class="btn-delete" onclick="deletePost(this)">この記事を削除</button>
+                    <button class="btn-delete" onclick="deletePost(this)" style="display: block;">この記事を削除</button>
                 </div>
                 </div>
         </section>
@@ -141,7 +152,7 @@
             let outputHtml = "<!DOCTYPE html>\n<html lang=\"ja\">\n" + currentHtml + "\n</html>";
             
             // 入力フォームに残った文字をコード上でリセットする処理
-            outputHtml = outputHtml.replace(/id="post-title" value=".*?"/g, 'id="post-title" value=""');
+            outputHtml = outputHtml.replace(/id="post-title" value=""/g, 'id="post-title" value=""');
             
             // 黒い枠に出力して自動全選択
             const outputBox = document.getElementById('code-output');
@@ -158,5 +169,7 @@
             }
         }
     </script>
-</body>
+
+
+</body></html>
 </html>
