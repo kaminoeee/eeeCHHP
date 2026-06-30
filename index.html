@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eeeの不思議な日記 公式サイト</title>
+    <style>
+        /* 全体の基本デザイン */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background-color: #121212; color: #ffffff; line-height: 1.7; }
+        header { background-color: #1a1f1c; border-bottom: 5px solid #4caf50; padding: 40px 20px; text-align: center; }
+        header h1 { font-size: 2.5rem; color: #4caf50; text-shadow: 2px 2px 0px #000; margin-bottom: 10px; }
+        .admin-badge { background-color: #f44336; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; vertical-align: middle; margin-left: 10px; display: none; }
+        header p { font-size: 1rem; color: #b0b0b0; }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        section { background-color: #1c1c1c; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid #2a2a2a; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h2 { font-size: 1.5rem; color: #8bc34a; border-left: 6px solid #4caf50; padding-left: 12px; margin-bottom: 20px; }
+        p { margin-bottom: 15px; color: #e0e0e0; }
+        
+        /* ブログエリア */
+        .blog-item { border-bottom: 1px solid #333; padding: 20px 0; position: relative; }
+        .blog-item:last-child { border-bottom: none; }
+        .blog-date { font-size: 0.85rem; color: #4caf50; font-weight: bold; display: block; margin-bottom: 5px; }
+        .blog-title { font-size: 1.2rem; color: #ffffff; font-weight: bold; margin-bottom: 8px; }
+        .blog-excerpt { font-size: 0.95rem; color: #aaaaaa; white-space: pre-wrap; }
+
+        /* 管理パネル */
+        #admin-panel { display: none; background-color: #2e1a1a; border: 2px dashed #f44336; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #8bc34a; }
+        .form-control { width: 100%; padding: 10px; background-color: #333; border: 1px solid #555; color: #fff; border-radius: 6px; }
+        .btn-admin { background-color: #4caf50; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-right: 10px; }
+        
+        /* 削除ボタン（管理者モードのときだけ自動で表示されます） */
+        .btn-delete { background-color: #f44336; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; margin-top: 10px; display: none; font-weight: bold; }
+        .btn-delete:hover { background-color: #d32f2f; }
+        
+        .output-box { width: 100%; height: 120px; background-color: #000; color: #0f0; font-family: monospace; padding: 10px; margin-top: 15px; border-radius: 6px; display: none; }
+
+        /* YouTubeボタン */
+        .btn-container { text-align: center; margin: 30px 0 10px; }
+        .btn { display: inline-block; background-color: #ff0000; color: #ffffff; text-decoration: none; padding: 14px 35px; font-weight: bold; border-radius: 30px; }
+        footer { text-align: center; padding: 30px; color: #888888; font-size: 0.85rem; border-top: 1px solid #222; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>eeeの不思議な日記 公式サイト <span id="admin-title-badge" class="admin-badge">Admin Mode</span></h1>
+        <p>ブロスタのレベル一チャレンジ動画などをを投稿中！</p>
+    </header>
+
+    <div class="container">
+
+        <section id="admin-panel">
+            <h2>【管理者専用】 記事作成・コード出力</h2>
+            <div class="form-group">
+                <label>タイトル</label>
+                <input type="text" id="post-title" class="form-control" placeholder="例：新着動画をアップしました！">
+            </div>
+            <div class="form-group">
+                <label>本文</label>
+                <textarea id="post-content" class="form-control" rows="5" placeholder="ブログの本文を入力..."></textarea>
+            </div>
+            <button type="button" class="btn-admin" onclick="generateNewCode()">① 変更（追加・削除）を確定してコードを出力</button>
+            <p style="font-size:0.85rem; color:#aaa; margin-top:10px;">↓下の枠に出たコードをすべてコピーして、GitHubの「index.html」に上書き貼り付け（Commit）してください。</p>
+            <textarea id="code-output" class="output-box" readonly onclick="this.select()"></textarea>
+        </section>
+
+        <section>
+            <h2>Welcome</h2>
+            <p>こんにちは！YouTubeでブロスタのレベル一チャレンジや文字PV動画を投稿している<strong>eeeの不思議な日記</strong>の公式サイトです。</p>
+            <p>動画の補足や、作成裏話などをブログとして発信していきます。</p>
+        </section>
+
+        <section>
+            <h2>Blog & News</h2>
+            <div id="blog-container">
+                <div class="blog-item">
+                    <span class="blog-date">2026/06/29</span>
+                    <div class="blog-title">公式サイトを開設しました！</div>
+                    <p class="blog-excerpt">YouTubeだけでは書ききれない動画の裏話などをここに残していく予定です。これからの更新をお楽しみに！</p>
+                    <button class="btn-delete" onclick="deletePost(this)">この記事を削除</button>
+                </div>
+                </div>
+        </section>
+
+        <section style="text-align: center;">
+            <h2>YouTube Channel</h2>
+            <p>最新のショート動画などはここからチェック！</p>
+            <div class="btn-container">
+                <a href="https://www.youtube.com/@eee%E3%81%AE%E4%B8%8D%E6%80%9D%E8%AD%B0%E3%81%AA%E6%97%A5%E8%A8%98" target="_blank" class="btn">YouTubeチャンネルを見に行く</a>
+            </div>
+        </section>
+
+    </div>
+
+    <footer><p>© 2026 eeeの不思議な日記 All Rights Reserved.</p></footer>
+
+    <script>
+        // URLに「?_admin」があるときだけ管理者モードをONにする
+        const isAdmin = window.location.search.includes('_admin');
+        if (isAdmin) {
+            document.getElementById('admin-panel').style.display = 'block';
+            document.getElementById('admin-title-badge').style.display = 'inline-block';
+            // 削除ボタンをすべて表示
+            document.querySelectorAll('.btn-delete').forEach(btn => btn.style.display = 'block');
+        }
+
+        // 記事削除機能（手元の画面から一時消去）
+        function deletePost(button) {
+            if (confirm('この記事を削除しますか？\n（※まだ完全消去されていません。削除後、上の緑のボタンを押してコードをGitHubに貼り付けてください）')) {
+                button.parentElement.remove();
+                generateNewCode(); // 削除後の状態でコードを自動再生成
+            }
+        }
+
+        // 新しいHTMLコードを出力するメイン処理
+        function generateNewCode() {
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const container = document.getElementById('blog-container');
+
+            // 入力がある場合のみ、新しい記事を先頭に追加
+            if (title && content) {
+                const today = new Date();
+                const dateStr = `${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
+                
+                const newPostHtml = `                <div class="blog-item">
+                    <span class="blog-date">${dateStr}</span>
+                    <div class="blog-title">${title}</div>
+                    <p class="blog-excerpt">${content}</p>
+                    <button class="btn-delete" onclick="deletePost(this)">この記事を削除</button>
+                </div>\n`;
+                
+                container.innerHTML = newPostHtml + container.innerHTML;
+            }
+
+            // 現在の画面全体のHTMLを取得
+            let currentHtml = document.documentElement.outerHTML;
+            let outputHtml = "<!DOCTYPE html>\n<html lang=\"ja\">\n" + currentHtml + "\n</html>";
+            
+            // 入力フォームに残った文字をコード上でリセットする処理
+            outputHtml = outputHtml.replace(/id="post-title" value=".*?"/g, 'id="post-title" value=""');
+            
+            // 黒い枠に出力して自動全選択
+            const outputBox = document.getElementById('code-output');
+            outputBox.value = outputHtml;
+            outputBox.style.display = 'block';
+            outputBox.select();
+            
+            // 手元の入力欄をきれいにする
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            
+            if(title && content) {
+                alert('記事を追加しました！下の黒い枠のコードをすべてコピーして、GitHubに上書き保存してください。');
+            }
+        }
+    </script>
+</body>
+</html>
